@@ -1,5 +1,5 @@
 # ZuneDeskop
-This is my fork of [ZuneDesk](https://github.com/PlatinShadow/ZuneDesk).
+This is my fork of [ZuneDesk](https://github.com/PlatinShadow/ZuneDesk) project.
 
 ## About the original / What is ZuneDesk?
 ZuneDesk is a desktop overlay for playing music. It's inspired by the Zune UI. 
@@ -31,7 +31,7 @@ If you find any bugs or would like to request a feature please open a new [issue
 ## Acknowledgements
 - Thanks to [this reddit post](https://www.reddit.com/r/Zune/comments/l8bu6r/windows_10_zune_start_menu_concept/) for inspiring me to do this!
 - Thanks to microsoft for making the Zune :)
-- Thanks to [https://github.com/PlatinShadow](Lars aka PlatinShadow) for making nice ZuneDesk "template" (desktop overlay) :)
+- Thanks to [Lars aka PlatinShadow](https://github.com/PlatinShadow) for making nice ZuneDesk "template" (desktop overlay) :)
 
 ## ..
 AS IS. No support. RnD only / DIY
