@@ -1,4 +1,4 @@
-# ZuneDeskop
+# ZuneDesktop
 This is my fork of [ZuneDesk](https://github.com/PlatinShadow/ZuneDesk) project.
 
 ## About the original / What is ZuneDesk?
