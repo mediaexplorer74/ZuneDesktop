@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.Windows;
 using System.Timers;
 
-namespace ZuneDesk.Controls.MediaControls {
-    public partial class MediaControls : UserControl {
+namespace ZuneDesk.Controls.MediaControls 
+{
+    public partial class MediaControls : UserControl 
+    {
         private GlobalSystemMediaTransportControlsSessionManager m_SessionManager;
         private GlobalSystemMediaTransportControlsSession m_Session;
 
@@ -19,7 +21,8 @@ namespace ZuneDesk.Controls.MediaControls {
         private Int32Rect m_ImageCropRect;
         private bool      m_ImageNeedsCropping;
 
-        public MediaControls() {
+        public MediaControls() 
+        {
             InitializeComponent();
 
             m_ImageNeedsCropping = false;
@@ -27,12 +30,15 @@ namespace ZuneDesk.Controls.MediaControls {
             m_TimelineTimer = new Timer(1000);
             m_TimelineTimer.Elapsed += TimelineTimer_Tick;
 
-            m_SessionManager = GlobalSystemMediaTransportControlsSessionManager.RequestAsync().GetAwaiter().GetResult();
+            m_SessionManager = 
+                GlobalSystemMediaTransportControlsSessionManager.RequestAsync()
+                .GetAwaiter().GetResult();
             m_SessionManager.CurrentSessionChanged += CurrentSessionChanged;
             CurrentSessionChanged(m_SessionManager, null);
         }
 
-        private void SetAppSpecificCropRegions(string id) {
+        private void SetAppSpecificCropRegions(string id) 
+        {
             switch (id) {
                 case "Spotify.exe":
                     m_ImageCropRect = new Int32Rect(33, 0, 234, 234);
@@ -44,19 +50,26 @@ namespace ZuneDesk.Controls.MediaControls {
             }
         }
 
-        private void TimelineTimer_Tick(Object sender, ElapsedEventArgs e) {
-            this.Dispatcher.Invoke(() => {
+        private void TimelineTimer_Tick(Object sender, ElapsedEventArgs e) 
+        {
+            this.Dispatcher.Invoke(() => 
+            {
                 m_TimeCurrentPos = m_TimeCurrentPos.Add(TimeSpan.FromSeconds(1));
-                Position.Text = String.Format("{0:D2}:{1:D2}", m_TimeCurrentPos.Minutes, m_TimeCurrentPos.Seconds);
-                double barWidth = (m_TimeCurrentPos.TotalSeconds / m_TimeLength.TotalSeconds) * ProgressBar.MaxWidth;
+                Position.Text = String.Format("{0:D2}:{1:D2}", m_TimeCurrentPos.Minutes, 
+                    m_TimeCurrentPos.Seconds);
+                double barWidth = (m_TimeCurrentPos.TotalSeconds / m_TimeLength.TotalSeconds) 
+                * ProgressBar.MaxWidth;
 
-                if(Double.IsInfinity(barWidth) != true) {
+                if(Double.IsInfinity(barWidth) != true) 
+                {
                     ProgressBar.Width = barWidth;
                 }
             });
         }
 
-        private void CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, CurrentSessionChangedEventArgs args) {
+        private void CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, 
+            CurrentSessionChangedEventArgs args) 
+        {
             m_Session = sender.GetCurrentSession();
             if (m_Session != null) {
                 this.Dispatcher.Invoke(() => {
@@ -76,20 +89,28 @@ namespace ZuneDesk.Controls.MediaControls {
             }
         }
 
-        private void TimelinePropertiesChanged(GlobalSystemMediaTransportControlsSession sender, TimelinePropertiesChangedEventArgs args) {
-            this.Dispatcher.Invoke(() => {
+        private void TimelinePropertiesChanged(GlobalSystemMediaTransportControlsSession sender, 
+            TimelinePropertiesChangedEventArgs args) 
+        {
+            this.Dispatcher.Invoke(() => 
+            {
                 var timeline = sender.GetTimelineProperties();
                 m_TimeCurrentPos = timeline.Position;
                 m_TimeLength     = timeline.EndTime;
 
-                Position.Text = String.Format("{0:D2}:{1:D2}", m_TimeCurrentPos.Minutes, m_TimeCurrentPos.Seconds);
-                EndTime.Text = String.Format("{0:D2}:{1:D2}", m_TimeLength.Minutes, m_TimeLength.Seconds);
+                Position.Text = String.Format("{0:D2}:{1:D2}", 
+                    m_TimeCurrentPos.Minutes, m_TimeCurrentPos.Seconds);
+                EndTime.Text = String.Format("{0:D2}:{1:D2}", 
+                    m_TimeLength.Minutes, m_TimeLength.Seconds);
 
-                ProgressBar.Width = (m_TimeCurrentPos.TotalSeconds / m_TimeLength.TotalSeconds) * ProgressBar.MaxWidth;
+                ProgressBar.Width = (m_TimeCurrentPos.TotalSeconds / m_TimeLength.TotalSeconds) 
+                   * ProgressBar.MaxWidth;
             });
         }
 
-        private void PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args) {
+        private void PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, 
+            PlaybackInfoChangedEventArgs args) 
+        {
             this.Dispatcher.Invoke(() => {
                 var info = sender.GetPlaybackInfo();         
                 switch (info.PlaybackStatus) {
@@ -142,16 +163,22 @@ namespace ZuneDesk.Controls.MediaControls {
             });
         }
 
-        private void StartStop_Click(object sender, RoutedEventArgs e) {
-            m_Session.TryTogglePlayPauseAsync();
+        private void StartStop_Click(object sender, RoutedEventArgs e) 
+        {
+            if (m_Session != null)
+              m_Session.TryTogglePlayPauseAsync();
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e) {
-            m_Session.TrySkipPreviousAsync();
+        private void Back_Click(object sender, RoutedEventArgs e) 
+        {
+            if (m_Session != null)
+                m_Session.TrySkipPreviousAsync();
         }
 
-        private void Skip_Click(object sender, RoutedEventArgs e) {
-            m_Session.TrySkipNextAsync();
+        private void Skip_Click(object sender, RoutedEventArgs e) 
+        {
+            if (m_Session != null)
+                m_Session.TrySkipNextAsync();
         }
     }
 }
